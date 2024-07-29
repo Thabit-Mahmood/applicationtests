@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          repository: <your-bitbucket-repo-url>
+          repository: git clone https://thabit1-admin@bitbucket.org/thabit1/prapplicationtesting.git
           token: ${{ secrets.BITBUCKET_TOKEN }}
 
       - name: Checkout Cypress tests
