@@ -1,0 +1,26 @@
+name: Run Cypress Tests
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [bitbucket_pull_request]
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          repository: <your-bitbucket-repo-url>
+          token: ${{ secrets.BITBUCKET_TOKEN }}
+
+      - name: Checkout Cypress tests
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Cypress tests
+        run: npx cypress run
