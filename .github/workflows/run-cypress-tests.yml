@@ -1,0 +1,19 @@
+name: Run Cypress Tests
+
+on:
+  repository_dispatch:
+    types: [bitbucket_pr_trigger]
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Cypress tests
+        run: npm run cypress:run
