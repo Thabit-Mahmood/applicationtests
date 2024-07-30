@@ -25,7 +25,7 @@ jobs:
         with:
           start: npm start # Optional, if you need to start a server
         env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }} # Optional, if you are using Cypress Dashboard
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }} # Optional, if using Cypress Dashboard
 
       - name: Generate mochawesome reports
         run: |

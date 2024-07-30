@@ -1,17 +1,19 @@
-const { defineConfig } = require('cypress')
+const { defineConfig } = require('cypress');
+const mochawesome = require('cypress-mochawesome-reporter/plugin');
 
 module.exports = defineConfig({
-  "reporter": "mochawesome",
-  "reporterOptions": {
-    "reportDir": "cypress/reports/mochawesome",
-    "reportFilename": "report",
-    "quiet": true,
-    "overwrite": false
-  },
   e2e: {
     setupNodeEvents(on, config) {
-      require('cypress-mochawesome-reporter/plugin')(on);
+      mochawesome(on);
       return config;
     },
+    // other e2e options
+  },
+  reporter: 'cypress-mochawesome-reporter',
+  reporterOptions: {
+    reportDir: 'cypress/reports/mochawesome',
+    reportFilename: 'report',
+    quiet: true,
+    overwrite: false,
   },
 });
