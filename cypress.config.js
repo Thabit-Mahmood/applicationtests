@@ -1,16 +1,16 @@
 const { defineConfig } = require('cypress')
 
 module.exports = defineConfig({
-  reporter: 'mochawesome',
+  reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
     reportDir: 'cypress/reports',
     overwrite: false,
-    html: false,
-    json: true
+    html: true,
+    json: true,
   },
   e2e: {
     setupNodeEvents(on, config) {
-      // Add any plugins here if needed
+      require('cypress-mochawesome-reporter/plugin')(on);
       return config;
     },
   },
