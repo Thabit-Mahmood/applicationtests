@@ -7,11 +7,10 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -20,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Cypress tests
+      - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
           command: npx cypress run
@@ -52,31 +51,6 @@ jobs:
           retention-days: 30
           if-no-files-found: ignore
 
-      - name: Install Puppeteer
-        run: npm install puppeteer
-
-      - name: Convert HTML Report to PDF
-        run: |
-          node -e "
-            const puppeteer = require('puppeteer');
-            (async () => {
-              const browser = await puppeteer.launch();
-              const page = await browser.newPage();
-              await page.goto('file://' + process.cwd() + '/cypress/reports/index.html', {waitUntil: 'networkidle2'});
-              await page.pdf({ path: process.cwd() + '/cypress/reports/report.pdf', format: 'A4' });
-              await browser.close();
-            })();
-          "
-
-      - name: Upload PDF Report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: cypress-report-pdf
-          path: cypress/reports/report.pdf
-          retention-days: 30
-          if-no-files-found: ignore
-
       - name: Commit Report to Bitbucket
         env:
           BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_TOKEN }}
@@ -87,5 +61,5 @@ jobs:
           cp -r cypress/reports/* reports/
           cd reports
           git add .
-          git commit -m "Update Cypress HTML report and PDF" || echo "No changes to commit"
+          git commit -m "Update Cypress HTML report" || echo "No changes to commit"
           git push origin reports
