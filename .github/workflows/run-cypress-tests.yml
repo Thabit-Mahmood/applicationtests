@@ -43,3 +43,7 @@ jobs:
           name: cypress-videos
           path: cypress/videos
           if-no-files-found: ignore
+
+      - name: List Cypress Directory
+        run: ls -R cypress
+        
