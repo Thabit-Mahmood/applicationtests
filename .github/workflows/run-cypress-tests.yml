@@ -52,8 +52,6 @@ jobs:
           if-no-files-found: ignore
 
       - name: Commit Report to Bitbucket
-        env:
-          BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_TOKEN }}
         run: |
           echo "Debug: Start committing report to Bitbucket"
 
@@ -63,10 +61,11 @@ jobs:
           git config user.email "ub5fjhx5cudmtxol9d4y1c8rjqr71t@bots.bitbucket.org"
 
           echo "Debug: Cloning repository"
-          git clone https://x-token-auth:${BITBUCKET_TOKEN}@bitbucket.org/thabit1/prapplicationtesting.git reports || echo "Cloning failed"
+          git clone https://x-token-auth:ATBBqXy3QFFajjexQhzG7wwHKqRNA545313A@bitbucket.org/thabit1/prapplicationtesting.git reports || echo "Cloning failed"
 
           echo "Debug: Copying reports"
-          cp -r cypress/reports/* reports/
+          mkdir -p reports/cypress/reports
+          cp -r cypress/reports/* reports/cypress/reports/
 
           cd reports
 
