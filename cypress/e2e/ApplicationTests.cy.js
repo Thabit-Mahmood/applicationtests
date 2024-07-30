@@ -4,5 +4,6 @@ describe('template spec', () => {
   })
   it('test 2', () => {
     cy.visit('https://example.cypress.io')
+    cy.contains('ahomeddsf2').click()
   })
 })
