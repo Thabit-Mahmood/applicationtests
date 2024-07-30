@@ -23,6 +23,9 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
 
+      - name: List Cypress Directory
+        run: ls -R cypress || true
+
       # After the test run completes store videos and any screenshots
       - name: Upload Cypress Screenshots
         uses: actions/upload-artifact@v4
