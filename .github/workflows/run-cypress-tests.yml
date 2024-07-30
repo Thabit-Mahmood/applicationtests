@@ -23,9 +23,6 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
 
-      - name: Generate report
-        run: npm run cypress:report
-
       - name: Upload screenshots
         uses: actions/upload-artifact@v4
         with:
@@ -39,9 +36,3 @@ jobs:
           name: cypress-videos
           path: cypress/videos
           if-no-files-found: ignore
-
-      - name: Upload report
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-report
-          path: cypress/reports
