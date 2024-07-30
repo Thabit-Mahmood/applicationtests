@@ -1,4 +1,4 @@
-name: Run Cypress Tests and Publish Report
+name: Run Cypress Tests
 
 on:
   repository_dispatch:
@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -52,31 +52,14 @@ jobs:
           if-no-files-found: ignore
 
       - name: Commit Report to Bitbucket
+        env:
+          BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_TOKEN }}
         run: |
-          echo "Debug: Start committing report to Bitbucket"
-
-          # Set Git user details
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git config user.email "ub5fjhx5cudmtxol9d4y1c8rjqr71t@bots.bitbucket.org"
-
-          echo "Debug: Cloning repository"
-          git clone https://x-token-auth:ATBBqXy3QFFajjexQhzG7wwHKqRNA545313A@bitbucket.org/thabit1/prapplicationtesting.git reports || echo "Cloning failed"
-
-          echo "Debug: Copying reports"
-          mkdir -p reports/cypress/reports
-          cp -r cypress/reports/* reports/cypress/reports/
-
+          git clone --branch reports https://x-token-auth:$BITBUCKET_TOKEN@bitbucket.org/thabit1/prapplicationtesting.git reports || git clone https://x-token-auth:$BITBUCKET_TOKEN@bitbucket.org/thabit1/prapplicationtesting.git reports
+          cp -r cypress/reports/* reports/
           cd reports
-
-          echo "Debug: Status of git repository"
-          git status
-
-          echo "Debug: Adding files"
           git add .
-
-          echo "Debug: Committing changes"
           git commit -m "Update Cypress HTML report" || echo "No changes to commit"
-
-          echo "Debug: Pushing changes"
-          git push origin main || echo "Push failed"
+          git push origin reports
