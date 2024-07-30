@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -57,8 +57,8 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git clone --branch reports https://x-token-auth:$BITBUCKET_TOKEN@https://bitbucket.org/thabit1/prapplicationtesting/src/fd57c6e5633ab3bb0d744d319eec3232dfdbb02b/?at=feature%2Freports || git clone https://x-token-auth:$BITBUCKET_TOKEN@https://bitbucket.org/thabit1/prapplicationtesting/src/fd57c6e5633ab3bb0d744d319eec3232dfdbb02b/?at=feature%2Freports
-          cp -r cypress/reports/* reports/ 
+          git clone --branch reports https://x-token-auth:$BITBUCKET_TOKEN@bitbucket.org/thabit1/prapplicationtesting.git reports || git clone https://x-token-auth:$BITBUCKET_TOKEN@bitbucket.org/thabit1/prapplicationtesting.git reports
+          cp -r cypress/reports/* reports/
           cd reports
           git add .
           git commit -m "Update Cypress HTML report" || echo "No changes to commit"
