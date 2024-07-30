@@ -51,15 +51,17 @@ jobs:
           retention-days: 30
           if-no-files-found: ignore
 
-      - name: Commit Report to Bitbucket
+      - name: Commit Report and Screenshots to Bitbucket
         env:
           BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_TOKEN }}
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git clone --branch reports https://thabit1-admin:${BITBUCKET_TOKEN}@bitbucket.org/thabit1/prapplicationtesting.git reports || git clone https://thabit1-admin:${BITBUCKET_TOKEN}@bitbucket.org/thabit1/prapplicationtesting.git reports
+          mkdir -p reports/screenshots
           cp -r cypress/reports/* reports/
+          cp -r cypress/screenshots/* reports/screenshots/
           cd reports
           git add .
-          git commit -m "Update Cypress HTML report" || echo "No changes to commit"
+          git commit -m "Update Cypress HTML report and screenshots" || echo "No changes to commit"
           git push origin reports
