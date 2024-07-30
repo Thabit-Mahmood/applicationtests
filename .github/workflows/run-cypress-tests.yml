@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -23,26 +23,28 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
 
-      - name: List Cypress Directory
-        run: ls -R cypress || true
-
-      # After the test run completes store videos and any screenshots
+      # Upload screenshots only on failures
       - name: Upload Cypress Screenshots
-        uses: actions/upload-artifact@v4
+        if: failure()
+        uses: actions/upload-artifact@v3
         with:
           name: cypress-screenshots
           path: cypress/screenshots
           if-no-files-found: ignore
 
+      # Upload videos always
       - name: Upload Cypress Videos
-        uses: actions/upload-artifact@v4
+        if: always()
+        uses: actions/upload-artifact@v3
         with:
           name: cypress-videos
           path: cypress/videos
           if-no-files-found: ignore
 
+      # Upload the Cypress report always
       - name: Upload Cypress Report
-        uses: actions/upload-artifact@v4
+        if: always()
+        uses: actions/upload-artifact@v3
         with:
           name: cypress-report
           path: cypress/reports
