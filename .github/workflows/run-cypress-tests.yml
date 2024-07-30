@@ -6,12 +6,11 @@ on:
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-22.04
-
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -20,32 +19,34 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Cypress tests
+      - name: Cypress run
         uses: cypress-io/github-action@v6
-
-      # Upload screenshots only on failures
-      - name: Upload Cypress Screenshots
-        if: failure()
-        uses: actions/upload-artifact@v4
         with:
-          name: cypress-screenshots
-          path: cypress/screenshots
-          if-no-files-found: ignore
+          command: npx cypress run
 
-      # Upload videos always
-      - name: Upload Cypress Videos
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-videos
-          path: cypress/videos
-          if-no-files-found: ignore
-
-      # Upload the Cypress report always
       - name: Upload Cypress Report
-        if: always()
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: cypress-report
           path: cypress/reports
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Upload Videos
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
+          retention-days: 30
           if-no-files-found: ignore
