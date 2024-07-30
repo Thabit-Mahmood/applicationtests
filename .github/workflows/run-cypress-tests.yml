@@ -1,4 +1,4 @@
-name: Run Cypress Tests
+name: Run Cypress Tests and Publish Report
 
 on:
   repository_dispatch:
@@ -50,3 +50,16 @@ jobs:
           path: cypress/videos
           retention-days: 30
           if-no-files-found: ignore
+
+      - name: Commit Report to Bitbucket
+        env:
+          BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_TOKEN }}
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git clone --branch reports https://$BITBUCKET_TOKEN@bitbucket.org/your-repo.git reports || git clone https://$BITBUCKET_TOKEN@bitbucket.org/your-repo.git reports
+          cp -r cypress/reports reports/
+          cd reports
+          git add .
+          git commit -m "Update Cypress HTML report"
+          git push origin reports
