@@ -21,10 +21,14 @@ jobs:
         run: npm install
 
       - name: Run Cypress tests
-        run: npm run cypress:run
-
-      - name: Generate report
-        run: npm run cypress:report
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: ./
+          config-file: cypress.config.js
+          record: false
+          reporter: cypress-mochawesome-reporter
+          reporter-options: |
+            reportDir=cypress/reports,overwrite=false,html=true,json=true
 
       - name: Upload screenshots
         uses: actions/upload-artifact@v4
