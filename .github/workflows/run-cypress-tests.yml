@@ -20,15 +20,21 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Create Reports and Screenshots Directories
+        run: mkdir -p cypress/reports cypress/screenshots cypress/videos
+
       - name: Run Cypress tests
         run: npx cypress run
+
+      - name: List Cypress Directory
+        run: ls -R cypress
 
       - name: Upload Cypress Report
         uses: actions/upload-artifact@v4
         with:
           name: cypress-report
           path: cypress/reports
-          if-no-files-found: error  # Change to 'ignore' if you want to skip if no files are found
+          if-no-files-found: ignore
 
       - name: Upload Screenshots
         uses: actions/upload-artifact@v4
@@ -43,7 +49,3 @@ jobs:
           name: cypress-videos
           path: cypress/videos
           if-no-files-found: ignore
-
-      - name: List Cypress Directory
-        run: ls -R cypress
-        
