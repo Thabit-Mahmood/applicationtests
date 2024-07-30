@@ -20,32 +20,27 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Create Reports and Screenshots Directories
-        run: mkdir -p cypress/reports cypress/screenshots cypress/videos
-
       - name: Run Cypress tests
-        run: npx cypress run
+        uses: cypress-io/github-action@v6
 
-      - name: List Cypress Directory
-        run: ls -R cypress
-
-      - name: Upload Cypress Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-report
-          path: cypress/reports
-          if-no-files-found: ignore
-
-      - name: Upload Screenshots
+      # After the test run completes store videos and any screenshots
+      - name: Upload Cypress Screenshots
         uses: actions/upload-artifact@v4
         with:
           name: cypress-screenshots
           path: cypress/screenshots
           if-no-files-found: ignore
 
-      - name: Upload Videos
+      - name: Upload Cypress Videos
         uses: actions/upload-artifact@v4
         with:
           name: cypress-videos
           path: cypress/videos
+          if-no-files-found: ignore
+
+      - name: Upload Cypress Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-report
+          path: cypress/reports
           if-no-files-found: ignore
