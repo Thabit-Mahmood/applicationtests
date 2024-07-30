@@ -7,10 +7,11 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -24,12 +25,26 @@ jobs:
         with:
           command: npx cypress run
 
-      - name: Upload Cypress Report
+      - name: Convert HTML Report to PDF
+        run: |
+          npm install -g puppeteer
+          node -e "
+            const puppeteer = require('puppeteer');
+            (async () => {
+              const browser = await puppeteer.launch();
+              const page = await browser.newPage();
+              await page.goto('file:///home/runner/work/applicationtests/applicationtests/cypress/reports/index.html', {waitUntil: 'networkidle2'});
+              await page.pdf({ path: '/home/runner/work/applicationtests/applicationtests/cypress/reports/report.pdf', format: 'A4' });
+              await browser.close();
+            })();
+          "
+
+      - name: Upload PDF Report
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cypress-report
-          path: cypress/reports
+          name: cypress-report-pdf
+          path: cypress/reports/report.pdf
           retention-days: 30
           if-no-files-found: ignore
 
@@ -61,5 +76,5 @@ jobs:
           cp -r cypress/reports/* reports/
           cd reports
           git add .
-          git commit -m "Update Cypress HTML report" || echo "No changes to commit"
+          git commit -m "Update Cypress HTML report and PDF" || echo "No changes to commit"
           git push origin reports
