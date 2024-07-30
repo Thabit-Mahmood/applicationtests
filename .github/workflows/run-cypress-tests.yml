@@ -6,25 +6,43 @@ on:
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '20'  # or '16' if you prefer Node.js 16
 
       - name: Install dependencies
         run: npm install
 
       - name: Run Cypress tests
-        run: npm run cypress:run
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: ./
+          config-file: cypress.config.js
+          record: false
+          reporter: cypress-mochawesome-reporter
+          reporter-options: |
+            reportDir=cypress/reports,overwrite=false,html=true,json=true
 
-      - name: Generate report
-        run: npm run cypress:report
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore
+
+      - name: Upload videos
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: cypress/videos
+          if-no-files-found: ignore
 
       - name: Upload report
         uses: actions/upload-artifact@v4
