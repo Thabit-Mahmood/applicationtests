@@ -53,13 +53,13 @@ jobs:
 
       - name: Commit Report to Bitbucket
         env:
-          BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_TOKEN }}
+          BITBUCKET_APP_PASSWORD: ${{ secrets.BITBUCKET_APP_PASSWORD }}
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git clone --branch reports https://x-token-auth:$BITBUCKET_TOKEN@bitbucket.org/thabit1/prapplicationtesting.git reports || git clone https://x-token-auth:$BITBUCKET_TOKEN@bitbucket.org/thabit1/prapplicationtesting.git reports
+          git clone --branch reports https://$BITBUCKET_USERNAME:$BITBUCKET_APP_PASSWORD@bitbucket.org/thabit1/prapplicationtesting.git reports || git clone https://$BITBUCKET_USERNAME:$BITBUCKET_APP_PASSWORD@bitbucket.org/thabit1/prapplicationtesting.git reports
           cp -r cypress/reports/* reports/
           cd reports
           git add .
           git commit -m "Update Cypress HTML report" || echo "No changes to commit"
-          git push origin reports 
+          git push origin reports
