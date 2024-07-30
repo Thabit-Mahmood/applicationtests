@@ -20,31 +20,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Cypress run
+      - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
           command: npx cypress run
 
-      - name: Convert HTML Report to PDF
-        run: |
-          npm install -g puppeteer
-          node -e "
-            const puppeteer = require('puppeteer');
-            (async () => {
-              const browser = await puppeteer.launch();
-              const page = await browser.newPage();
-              await page.goto('file:///home/runner/work/applicationtests/applicationtests/cypress/reports/index.html', {waitUntil: 'networkidle2'});
-              await page.pdf({ path: '/home/runner/work/applicationtests/applicationtests/cypress/reports/report.pdf', format: 'A4' });
-              await browser.close();
-            })();
-          "
-
-      - name: Upload PDF Report
+      - name: Upload Cypress Report
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cypress-report-pdf
-          path: cypress/reports/report.pdf
+          name: cypress-report
+          path: cypress/reports
           retention-days: 30
           if-no-files-found: ignore
 
@@ -63,6 +49,31 @@ jobs:
         with:
           name: cypress-videos
           path: cypress/videos
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Install Puppeteer
+        run: npm install puppeteer
+
+      - name: Convert HTML Report to PDF
+        run: |
+          node -e "
+            const puppeteer = require('puppeteer');
+            (async () => {
+              const browser = await puppeteer.launch();
+              const page = await browser.newPage();
+              await page.goto('file://' + process.cwd() + '/cypress/reports/index.html', {waitUntil: 'networkidle2'});
+              await page.pdf({ path: process.cwd() + '/cypress/reports/report.pdf', format: 'A4' });
+              await browser.close();
+            })();
+          "
+
+      - name: Upload PDF Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-report-pdf
+          path: cypress/reports/report.pdf
           retention-days: 30
           if-no-files-found: ignore
 
