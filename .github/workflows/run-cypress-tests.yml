@@ -22,7 +22,10 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          command: npx cypress run
+          command: npx cypress run --reporter mocha-multi-reporters --reporter-options configFile=cypress/reports/reporter-config.json
+
+      - name: Generate Markdown Summary
+        run: node generate-markdown-summary.js
 
       - name: Upload Cypress Report
         uses: actions/upload-artifact@v4
@@ -62,6 +65,11 @@ jobs:
           mkdir -p reports/screenshots
           cp -r cypress/reports/* reports/
           cp -r cypress/screenshots/* reports/screenshots/
+          echo "## Cypress Test Report" > reports/summary.md
+          echo "" >> reports/summary.md
+          echo "### Test Results" >> reports/summary.md
+          echo "" >> reports/summary.md
+          cat cypress/reports/summary.md >> reports/summary.md
           cd reports
           git add .
           git commit -m "Update Cypress HTML report and screenshots" || echo "No changes to commit"
