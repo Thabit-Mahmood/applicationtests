@@ -3,8 +3,7 @@ name: Run Cypress Tests
 on:
   repository_dispatch:
     types: [bitbucket_pr_trigger]
-  schedule:
-    - cron: '44 12 * * *'
+
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
