@@ -25,7 +25,11 @@ jobs:
           command: npx cypress run --reporter mocha-multi-reporters --reporter-options configFile=cypress/reports/reporter-config.json
 
       - name: Generate Markdown Summary
-        run: node generate-markdown-summary.js
+        run: |
+          if [ ! -f cypress/reports/summary.md ]; then
+            echo "# Cypress Test Report Summary" > cypress/reports/summary.md
+            echo "Test results summary" >> cypress/reports/summary.md
+          fi
 
       - name: Upload Cypress Report
         uses: actions/upload-artifact@v4
@@ -67,11 +71,13 @@ jobs:
           if [ -d "cypress/screenshots" ]; then
             cp -r cypress/screenshots/* reports/screenshots/
           fi
-          echo "## Cypress Test Report" > reports/summary.md
-          echo "" >> reports/summary.md
-          echo "### Test Results" >> reports/summary.md
-          echo "" >> reports/summary.md
-          cat cypress/reports/summary.md >> reports/summary.md
+          if [ -f "cypress/reports/summary.md" ]; then
+            echo "## Cypress Test Report" > reports/summary.md
+            echo "" >> reports/summary.md
+            echo "### Test Results" >> reports/summary.md
+            echo "" >> reports/summary.md
+            cat cypress/reports/summary.md >> reports/summary.md
+          fi
           cd reports
           git add .
           git commit -m "Update Cypress HTML report and screenshots" || echo "No changes to commit"
