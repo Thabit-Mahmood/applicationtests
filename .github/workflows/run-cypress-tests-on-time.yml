@@ -2,9 +2,8 @@ name: Run Cypress Tests on Time
 
 on:
   schedule:
-    - cron: '15 0 * * *'  # 12:15 AM UTC (8:15 AM MYT)
-    - cron: '00 4 * * *'  # 4:00 AM UTC (12:00 PM MYT)
-    - cron: '19 12 * * *' # 10:00 AM UTC (6:00 PM MYT)
+    - cron: '22 12 * * *'  # Runs at 12:25 PM UTC, which is 8:25 PM in Malaysia
+
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
@@ -60,12 +59,4 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git clone --branch reports https://thabit1-admin:${BITBUCKET_TOKEN}@bitbucket.org/thabit1/prapplicationtesting.git reports || git clone https://thabit1-admin:${BITBUCKET_TOKEN}@bitbucket.org/thabit1/prapplicationtesting.git reports
-          mkdir -p reports/screenshots
-          mkdir -p reports/videos
-          cp -r cypress/reports/* reports/
-          cp -r cypress/screenshots/* reports/screenshots/
-          cp -r cypress/videos/* reports/videos/
-          cd reports
-          git add .
-          git commit -m "Update Cypress HTML report, screenshots, and videos" || echo "No changes to commit"
-          git push origin reports
+          mkdir
