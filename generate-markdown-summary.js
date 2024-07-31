@@ -5,12 +5,13 @@ const reportPath = path.join(__dirname, 'cypress', 'reports', '.jsons', 'mochawe
 const summaryPath = path.join(__dirname, 'markdown-summary.md');
 
 if (!fs.existsSync(reportPath)) {
-  console.error('Report JSON file not found.');
+  console.error('Report JSON file not found at path:', reportPath);
   process.exit(1);
 }
 
 const report = JSON.parse(fs.readFileSync(reportPath, 'utf-8'));
 
+// Generate Markdown summary as before
 let markdownSummary = `# Cypress Test Report\n\n`;
 markdownSummary += `## Summary\n`;
 markdownSummary += `- **Total Tests:** ${report.stats.tests}\n`;

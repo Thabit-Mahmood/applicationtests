@@ -7,10 +7,11 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -19,10 +20,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          command: npx cypress run
+      - name: Run Cypress tests
+        run: npx cypress run
 
       - name: Upload Cypress Report
         uses: actions/upload-artifact@v4
@@ -52,22 +51,24 @@ jobs:
           if-no-files-found: ignore
 
       - name: Generate Markdown Summary
+        run: |
+          mkdir -p cypress/reports
+          npx generate-markdown-summary.js
         if: always()
-        run: node generate-markdown-summary.js
+        continue-on-error: true
 
       - name: Commit Report, Screenshots, and Summary to Bitbucket
-        if: always()
         env:
           BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_TOKEN }}
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git clone --branch reports https://thabit1-admin:${BITBUCKET_TOKEN}@bitbucket.org/thabit1/prapplicationtesting.git reports || git clone https://thabit1-admin:${BITBUCKET_TOKEN}@bitbucket.org/thabit1/prapplicationtesting.git reports
-          mkdir -p reports/screenshots
           cp -r cypress/reports/* reports/
-          cp -r cypress/screenshots/* reports/screenshots/
-          cp markdown-summary.md reports/
+          cp -r cypress/screenshots/* reports/screenshots/ || true
+          cp -r cypress/videos/* reports/videos/ || true
+          cp -r cypress/markdown-summary.md reports/ || true
           cd reports
           git add .
-          git commit -m "Update Cypress HTML report, screenshots, and summary" || echo "No changes to commit"
+          git commit -m "Update Cypress HTML report, screenshots, and Markdown summary" || echo "No changes to commit"
           git push origin reports
