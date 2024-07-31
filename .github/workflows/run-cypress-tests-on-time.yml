@@ -2,7 +2,7 @@ name: Run Cypress Tests on Time
 
 on:
   schedule:
-    - cron: '22 12 * * *'  # Runs at 12:25 PM UTC, which is 8:25 PM in Malaysia
+    - cron: '24 20 * * *'  # Runs at 12:25 PM UTC, which is 8:25 PM in Malaysia
 
 jobs:
   cypress-run:
