@@ -1,10 +1,10 @@
-name: Run Cypress Tests
+name: Run Cypress Tests on Time
 
 on:
   schedule:
     - cron: '15 0 * * *'  # 12:15 AM UTC (8:15 AM MYT)
     - cron: '00 4 * * *'  # 4:00 AM UTC (12:00 PM MYT)
-    - cron: '11 12 * * *' # 10:00 AM UTC (6:00 PM MYT)
+    - cron: '17 20 * * *' # 10:00 AM UTC (6:00 PM MYT)
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
