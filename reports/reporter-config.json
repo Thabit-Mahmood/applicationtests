@@ -1,0 +1,13 @@
+{
+  "reporterEnabled": "mochawesome, json",
+  "mochawesomeReporterOptions": {
+    "reportDir": "cypress/reports",
+    "reportFilename": "cypress-report",
+    "overwrite": false,
+    "html": false,
+    "json": true
+  },
+  "jsonReporterOptions": {
+    "output": "cypress/reports/report.json"
+  }
+}
