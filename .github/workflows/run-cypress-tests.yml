@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -64,7 +64,9 @@ jobs:
           git clone --branch reports https://thabit1-admin:${BITBUCKET_TOKEN}@bitbucket.org/thabit1/prapplicationtesting.git reports || git clone https://thabit1-admin:${BITBUCKET_TOKEN}@bitbucket.org/thabit1/prapplicationtesting.git reports
           mkdir -p reports/screenshots
           cp -r cypress/reports/* reports/
-          cp -r cypress/screenshots/* reports/screenshots/
+          if [ -d "cypress/screenshots" ]; then
+            cp -r cypress/screenshots/* reports/screenshots/
+          fi
           echo "## Cypress Test Report" > reports/summary.md
           echo "" >> reports/summary.md
           echo "### Test Results" >> reports/summary.md
