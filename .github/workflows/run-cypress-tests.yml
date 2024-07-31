@@ -51,7 +51,11 @@ jobs:
           retention-days: 30
           if-no-files-found: ignore
 
-      - name: Commit Report and Screenshots to Bitbucket
+      - name: Generate Markdown Summary
+        if: always()
+        run: node generate-markdown-summary.js
+
+      - name: Commit Report, Screenshots, and Summary to Bitbucket
         if: always()
         env:
           BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_TOKEN }}
@@ -62,7 +66,8 @@ jobs:
           mkdir -p reports/screenshots
           cp -r cypress/reports/* reports/
           cp -r cypress/screenshots/* reports/screenshots/
+          cp markdown-summary.md reports/
           cd reports
           git add .
-          git commit -m "Update Cypress HTML report and screenshots" || echo "No changes to commit"
+          git commit -m "Update Cypress HTML report, screenshots, and summary" || echo "No changes to commit"
           git push origin reports
