@@ -59,9 +59,13 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git clone --branch reports https://thabit1-admin:${BITBUCKET_TOKEN}@bitbucket.org/thabit1/prapplicationtesting.git reports || git clone https://thabit1-admin:${BITBUCKET_TOKEN}@bitbucket.org/thabit1/prapplicationtesting.git reports
-          mkdir -p reports/screenshots
+          
+          # Copy reports to the repository
           cp -r cypress/reports/* reports/
-          cp -r cypress/screenshots/* reports/screenshots/
+          
+          # Copy screenshots directly to the root of the repository
+          cp -r cypress/screenshots/* reports/
+          
           cd reports
           git add .
           git commit -m "Update Cypress HTML report and screenshots" || echo "No changes to commit"
