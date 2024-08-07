@@ -3,6 +3,6 @@ describe('template spec', () => {
     cy.visit('https://example.cypress.io')
   })
   it('test 2', () => {
-    cy.visit('https://examdaple.cyprq1ess.io')
+    cy.visit('https://examdaple.cypress.io')
   })
 })
