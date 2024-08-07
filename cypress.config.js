@@ -9,6 +9,7 @@ module.exports = defineConfig({
     json: true,
   },
   video: true,
+  screenshotOnRunFailure: true,
   e2e: {
     setupNodeEvents(on, config) {
       require('cypress-mochawesome-reporter/plugin')(on);
