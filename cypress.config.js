@@ -1,12 +1,19 @@
 const { defineConfig } = require('cypress')
 
 module.exports = defineConfig({
-  reporter: 'cypress-mochawesome-reporter',
+  reporter: 'cypress-multi-reporters',
   reporterOptions: {
-    reportDir: 'cypress/reports',
-    overwrite: false,
-    html: true,
-    json: true,
+    reporterEnabled: 'cypress-mochawesome-reporter, junit',
+    cypressMochawesomeReporterReporterOptions: {
+      reportDir: 'cypress/reports',
+      overwrite: false,
+      html: true,
+      json: true,
+    },
+    junitReporterOptions: {
+      mochaFile: 'cypress/reports/junit/results-[hash].xml',
+      toConsole: true,
+    },
   },
   video: true,
   e2e: {
