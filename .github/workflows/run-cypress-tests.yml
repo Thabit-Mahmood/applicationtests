@@ -50,21 +50,3 @@ jobs:
           path: cypress/videos
           retention-days: 30
           if-no-files-found: ignore
-
-      - name: Commit Report, Screenshots, and Videos to Bitbucket
-        if: always()
-        env:
-          BITBUCKET_TOKEN: ${{ secrets.BITBUCKET_TOKEN }}
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git clone --branch reports https://thabit1-admin:${BITBUCKET_TOKEN}@bitbucket.org/thabit1/prapplicationtesting.git reports || git clone https://thabit1-admin:${BITBUCKET_TOKEN}@bitbucket.org/thabit1/prapplicationtesting.git reports
-          mkdir -p reports/screenshots
-          mkdir -p reports/videos
-          cp -r cypress/reports/* reports/
-          cp -r cypress/screenshots/* reports/screenshots/
-          cp -r cypress/videos/* reports/videos/
-          cd reports
-          git add .
-          git commit -m "Update Cypress HTML report, screenshots, and videos" || echo "No changes to commit"
-          git push origin reports
