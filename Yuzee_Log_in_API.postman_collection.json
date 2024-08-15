@@ -1,0 +1,479 @@
+{
+	"info": {
+		"_postman_id": "febcf453-5af6-47f0-a462-a9a71d0e6922",
+		"name": "Yuzee Log in API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37480617"
+	},
+	"item": [
+		{
+			"name": "Generate access token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Ensure the status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Check that the access token is present\r",
+							"pm.test(\"Access Token is present\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.access_token).to.exist;\r",
+							"});\r",
+							"\r",
+							"// Verify the access token is not empty\r",
+							"pm.test(\"Access Token is not empty\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.access_token).to.not.be.empty;\r",
+							"});\r",
+							"\r",
+							"// Optionally, check other tokens\r",
+							"pm.test(\"Refresh Token is present\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.refresh_token).to.exist;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"ID Token is present\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id_token).to.exist;\r",
+							"});\r",
+							"\r",
+							"// Response Time Test\r",
+							"pm.test(\"Response time is within acceptable limits\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000); // 2 seconds threshold\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Parse the response JSON\r",
+							"var response = pm.response.json();\r",
+							"\r",
+							"// Extract the access token\r",
+							"var accessToken = response.access_token;\r",
+							"\r",
+							"// Update the collection variable 'access_token'\r",
+							"pm.collectionVariables.set(\"access_token\", accessToken);\r",
+							"\r",
+							"// Log the token to the console (for debugging purposes)\r",
+							"console.log(\"Access Token:\", accessToken);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{authorization_header_password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "yuzee_client",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "origin",
+						"value": "https://dev.yuzee.click",
+						"type": "text"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid email profile",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "thabit252@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Yuzee.123456789",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/realms/yuzee/protocol/openid-connect/token",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"realms",
+						"yuzee",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invoke login API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test using the token\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Login successful message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"login.succefully\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "entityid",
+						"value": "a0d3970d-d1bc-427e-82c7-7c3d9bb5956b",
+						"type": "text"
+					},
+					{
+						"key": "entitytype",
+						"value": "USER",
+						"type": "text"
+					},
+					{
+						"key": "origin",
+						"value": "https://dev.yuzee.click",
+						"type": "text"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+						"type": "text"
+					},
+					{
+						"key": "userid",
+						"value": "a0d3970d-d1bc-427e-82c7-7c3d9bb5956b",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{baseURL}}/quick-blox/api/v1/quickblox/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"quick-blox",
+						"api",
+						"v1",
+						"quickblox",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate access token Validation Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assuming you have created requests for invalid cases\r",
+							"\r",
+							"// For missing fields\r",
+							"pm.test(\"Status code is 400 for missing fields\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error message is present for missing fields\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.error).to.exist;\r",
+							"});\r",
+							"\r",
+							"// For invalid data\r",
+							"pm.test(\"Status code is 400 for invalid data\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error message is present for invalid data\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.error).to.exist;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "290236cf-83g2-4891-abce-f3fe3c075c10",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "origin",
+						"value": "https://dev.yuzee.click",
+						"type": "text"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid email profile",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "thabit252@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Yuzee.123456789",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/realms/yuzee/protocol/openid-connect/token",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"realms",
+						"yuzee",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate access token SQL Injection",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response does not expose sensitive information\", function () {\r",
+							"    var responseBody = pm.response.text();\r",
+							"    pm.expect(responseBody).to.not.include(\"stack trace\");\r",
+							"    pm.expect(responseBody).to.not.include(\"debug\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"' OR '1'='1\",\n  \"client_id\": \"a0d3970d-d1bc-427e-82c7-7c3d9bb5956b\",\n  \"grant_type\": \"password\"\n}\n",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{\n  \"email\": \"admin' OR '1'='1\",\n  \"password\": \"password\",\n  \"client_id\": \"a0d3970d-d1bc-427e-82c7-7c3d9bb5956b\",\n  \"grant_type\": \"password\"\n}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "origin",
+						"value": "https://dev.yuzee.click",
+						"type": "text"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+						"type": "text"
+					},
+					{
+						"key": "Accept-Language",
+						"value": "en-US,en;q=0.9",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid email profile",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "thabit252@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Yuzee.123456789",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth/realms/yuzee/protocol/openid-connect/token",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth",
+						"realms",
+						"yuzee",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://auth.yuzee.click"
+		},
+		{
+			"key": "authorization_header_password",
+			"value": "290236cf-81d2-4891-abce-f3fe3c095c10"
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		}
+	]
+}

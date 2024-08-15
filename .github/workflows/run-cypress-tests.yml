@@ -19,6 +19,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Set up Testomatio environment
+        run: |
+          export TESTOMATIO=tstmt_zAo_aCIIATWgWDanCqG2hvPndWluYfREMg1723429036
+          npx check-tests@latest Cypress.io "**/*{.,_}{test,spec,cy}.js" --dir cypress/*
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
