@@ -22,7 +22,7 @@ jobs:
       - name: Set up Testomatio environment
         run: |
           export TESTOMATIO=tstmt_zAo_aCIIATWgWDanCqG2hvPndWluYfREMg1723429036
-          npx check-tests@latest Cypress.io "**/*{.,_}{test,spec,cy}.js" --dir cypress/*
+          npx check-tests@latest Cypress.io "**/*{.,_}{test,spec,cy}.js" --dir cypress/e2e/*
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
