@@ -37,6 +37,10 @@ jobs:
         run: |
           echo "Running tests on Testomat..."
           export TESTOMATIO=tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529
+
+      - name: Run Cypress Tests Locally
+        run: |
+          echo "Running Cypress tests locally..."
           npx cypress run
 
       - name: Upload Cypress Report
