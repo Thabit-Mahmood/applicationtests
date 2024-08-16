@@ -37,11 +37,18 @@ jobs:
         run: |
           echo "Running tests on Testomat..."
           export TESTOMATIO=tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529
+          npx cypress run
 
       - name: Run Cypress Tests Locally
         run: |
           echo "Running Cypress tests locally..."
           npx cypress run
+
+      - name: Install Newman and Run Postman API Tests
+        run: |
+          echo "Installing Newman and running Postman API tests..."
+          npm install -g newman-reporter-html extra
+          newman run Yuzee_Log_in_API.postman_collection.json --reporters cli,htmlextra
 
       - name: Upload Cypress Report
         uses: actions/upload-artifact@v4
