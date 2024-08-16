@@ -20,6 +20,7 @@ module.exports = defineConfig({
       
       return config;
     },
+    screenshotOnRunFailure: true,
     videoUploadOnPasses: false,
   },
 });
