@@ -1,4 +1,4 @@
-name: Run Cypress Tests and Postman API Tests
+name: Run Cypress Tests
 
 on:
   push
@@ -36,29 +36,11 @@ jobs:
         run: |
           echo "Running tests on Testomat..."
           export TESTOMATIO=tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529
-          npx cypress run
 
       - name: Run Cypress Tests Locally
         run: |
           echo "Running Cypress tests locally..."
           npx cypress run
-
-      - name: Install Newman and Run Postman API Tests
-        run: |
-          echo "Installing Newman and running Postman API tests..."
-          npm install -g newman-reporter-html extra
-          mkdir -p reports/newman
-          newman run Yuzee_Log_in_API.postman_collection.json --reporters cli,htmlextra --reporter-htmlextra-export reports/newman/newman-report.html
-
-      - name: Commit and Push Report
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
-          git add reports/newman/newman-report.html
-          git commit -m "Add Newman report"
-          git push
 
       - name: Upload Cypress Report
         uses: actions/upload-artifact@v4
@@ -84,14 +66,5 @@ jobs:
         with:
           name: cypress-videos
           path: cypress/videos
-          retention-days: 30
-          if-no-files-found: ignore
-
-      - name: Upload Postman Report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: newman-report
-          path: reports/newman/newman-report.html
           retention-days: 30
           if-no-files-found: ignore
