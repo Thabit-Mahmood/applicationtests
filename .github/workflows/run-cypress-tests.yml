@@ -10,24 +10,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install
-
-      - name: Set up Testomatio environment
         run: |
-          export TESTOMATIO=tstmt_zAo_aCIIATWgWDanCqG2hvPndWluYfREMg1723429036
-          npx check-tests@latest Cypress.io "**/*{.,_}{test,spec,cy}.js" --dir cypress/e2e/*
+          npm install
+          npm install --save-dev @testomatio/reporter
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          command: npx cypress run
+      - name: Import test data to Testomatio
+        run: |
+          export TESTOMATIO=tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529
+          npx check-tests@latest Cypress.io "**/*{.,_}{test,spec,cy}.js" --dir cypress/*
+
+      - name: Run Cypress tests
+        run: |
+          export TESTOMATIO=tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529
+          npx cypress run
 
       - name: Upload Cypress Report
         uses: actions/upload-artifact@v4
