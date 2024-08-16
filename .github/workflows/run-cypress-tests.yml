@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -22,15 +22,12 @@ jobs:
       - name: Install Testomat Reporter
         run: npm install --save-dev @testomatio/reporter
 
-      - name: Import Data to Testomat
-        env:
-          TESTOMATIO: "tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529"
-        run: npx check-tests@latest Cypress.io "**/*{.,_}{test,spec,cy}.js" --dir cypress/*
+      - name: Import Test Data to Testomat
+        run: npx check-tests@latest Cypress.io "**/*{.,_}{test,spec,cy}.js" --dir cypress/
 
-      - name: Run Cypress Tests
+      - name: Run Tests on Testomat
         env:
-          TESTOMATIO: "tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529"
-
+          TESTOMATIO: TESTOMATIO=tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529 npx cypress run
         run: npx cypress run
 
       - name: Upload Cypress Report
