@@ -1,8 +1,7 @@
 name: Run Cypress Tests
 
 on:
-  repository_dispatch:
-    types: [bitbucket_pr_trigger]
+  push
 
 jobs:
   cypress-run:
