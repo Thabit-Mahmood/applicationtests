@@ -19,15 +19,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set up Testomatio environment
-        run: |
-          export TESTOMATIO=tstmt_zAo_aCIIATWgWDanCqG2hvPndWluYfREMg1723429036
-          npx check-tests@latest Cypress.io "**/*{.,_}{test,spec,cy}.js" --dir cypress/*
+      - name: Install Testomat Reporter
+        run: npm install --save-dev @testomatio/reporter
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          command: npx cypress run
+      - name: Import Data to Testomat
+        env:
+          TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
+        run: npx check-tests@latest Cypress.io "**/*{.,_}{test,spec,cy}.js" --dir cypress/*
+
+      - name: Run Cypress Tests
+        env:
+          TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
+        run: npx cypress run
 
       - name: Upload Cypress Report
         uses: actions/upload-artifact@v4
