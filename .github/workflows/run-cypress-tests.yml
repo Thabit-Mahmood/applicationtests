@@ -24,19 +24,25 @@ jobs:
 
       - name: Import Test Data to Testomat
         run: |
+          echo "Importing test data to Testomat..."
           export TESTOMATIO=tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529
           npx check-tests@latest Cypress.io "**/*{.,_}{test,spec,cy}.js" --dir cypress/
 
       - name: Install Testomat Reporter
-        run: npm install --save-dev @testomatio/reporter
+        run: |
+          echo "Installing Testomat Reporter..."
+          npm install --save-dev @testomatio/reporter
 
       - name: Run Tests on Testomat
         run: |
+          echo "Running tests on Testomat..."
           export TESTOMATIO=tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529
           npx cypress run
 
       - name: Run Cypress Tests Locally
-        run: npx cypress run
+        run: |
+          echo "Running Cypress tests locally..."
+          npx cypress run
 
       - name: Upload Cypress Report
         uses: actions/upload-artifact@v4
