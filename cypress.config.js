@@ -1,4 +1,4 @@
-const { defineConfig } = require('cypress')
+const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
   reporter: 'cypress-mochawesome-reporter',
@@ -11,7 +11,12 @@ module.exports = defineConfig({
   video: true,
   e2e: {
     setupNodeEvents(on, config) {
+      // Load the Testomatio plugin
+      require('@testomatio/reporter/lib/adapter/cypress-plugin')(on, config);
+      
+      // Load the Cypress Mochawesome Reporter plugin
       require('cypress-mochawesome-reporter/plugin')(on);
+      
       return config;
     },
     videoUploadOnPasses: false,
