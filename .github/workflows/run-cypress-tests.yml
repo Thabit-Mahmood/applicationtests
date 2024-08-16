@@ -1,4 +1,4 @@
-name: Run Cypress Tests
+name: Run Tests
 
 on:
   push
@@ -32,11 +32,10 @@ jobs:
           echo "Installing Testomat Reporter..."
           npm install --save-dev @testomatio/reporter
 
-      - name: Run Tests on Testomat
+      - name: Set Testomat API
         run: |
           echo "Running tests on Testomat..."
           export TESTOMATIO=tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529
-          npx cypress run
 
       - name: Run Cypress Tests Locally
         run: |
