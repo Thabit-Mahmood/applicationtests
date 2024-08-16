@@ -47,8 +47,16 @@ jobs:
         run: |
           echo "Installing Newman and running Postman API tests..."
           npm install -g newman-reporter-html extra
-          mkdir -p newman-reports
-          newman run Yuzee_Log_in_API.postman_collection.json --reporters cli,htmlextra --reporter-htmlextra-export newman-reports/newman-report.html
+          mkdir -p reports/newman
+          newman run Yuzee_Log_in_API.postman_collection.json --reporters cli,htmlextra --reporter-htmlextra-export reports/newman/newman-report.html
+
+      - name: Commit and Push Report
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add reports/newman/newman-report.html
+          git commit -m "Add Newman report"
+          git push
 
       - name: Upload Cypress Report
         uses: actions/upload-artifact@v4
@@ -82,6 +90,6 @@ jobs:
         if: always()
         with:
           name: newman-report
-          path: newman-reports/newman-report.html
+          path: reports/newman/newman-report.html
           retention-days: 30
           if-no-files-found: ignore
