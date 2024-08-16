@@ -24,12 +24,13 @@ jobs:
 
       - name: Import Data to Testomat
         env:
-          TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
+          TESTOMATIO: "tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529"
         run: npx check-tests@latest Cypress.io "**/*{.,_}{test,spec,cy}.js" --dir cypress/*
 
       - name: Run Cypress Tests
         env:
-          TESTOMATIO: ${{ secrets.TESTOMATIO_API_KEY }}
+          TESTOMATIO: "tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529"
+
         run: npx cypress run
 
       - name: Upload Cypress Report
