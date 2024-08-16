@@ -12,7 +12,6 @@ module.exports = defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
       require('cypress-mochawesome-reporter/plugin')(on);
-      require('@testomatio/reporter/lib/adapter/cypress-plugin')(on, config);
       return config;
     },
     videoUploadOnPasses: false,
