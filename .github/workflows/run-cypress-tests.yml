@@ -19,13 +19,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Set Testomat API Key
+        run: echo "TESTOMATIO=tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529" >> $GITHUB_ENV
+
+      - name: Import Test Data to Testomat
+        run: npx check-tests@latest Cypress.io "**/*{.,_}{test,spec,cy}.js" --dir cypress/
+
       - name: Install Testomat Reporter
         run: npm install --save-dev @testomatio/reporter
 
-      - name: Setup Testomat and Run Tests
-        run: |
-          npx check-tests@latest Cypress.io "**/*{.,_}{test,spec,cy}.js" --dir cypress/
-          TESTOMATIO=tstmt_jD8Ba7Y6MEdfz6GSfNPuPkZdm-iXkSli8g1723767529 npx cypress run
+      - name: Run Tests on Testomat
+        run: npx cypress run
 
       - name: Run Cypress Tests Locally
         run: npx cypress run
