@@ -3,7 +3,21 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "test:sequential-ui": "powershell -ExecutionPolicy Bypass -File ./run-tests-sequentially.ps1",
+    "test": "npm-run-all --parallel test:run:test1 test:run:test2 test:run:test3 test:run:test4 test:run:test5 test:run:test6 test:run:test7 test:run:test8 test:run:test9 test:run:test10 test:run:test11 test:run:test12",
+    "test:run:test1": "cypress run --spec 'cypress/e2e/Admin.cy.js'",
+    "test:run:test2": "cypress run --spec 'cypress/e2e/Institution.cy.js'",
+    "test:run:test3": "cypress run --spec 'cypress/e2e/User.cy.js'",
+    "test:run:test4": "cypress run --spec 'cypress/e2e/User2.cy.js'",
+    "test:run:test5": "cypress run --spec 'cypress/e2e/User3.cy.js'",
+    "test:run:test6": "cypress run --spec 'cypress/e2e/User4.cy.js'",
+    "test:run:test7": "cypress run --spec 'cypress/e2e/User5.cy.js'",
+    "test:run:test8": "cypress run --spec 'cypress/e2e/User6.cy.js'",
+    "test:run:test9": "cypress run --spec 'cypress/e2e/User7.cy.js'",
+    "test:run:test10": "cypress run --spec 'cypress/e2e/User8.cy.js'",
+    "test:run:test11": "cypress run --spec 'cypress/e2e/User9.cy.js'",
+    "test:run:test12": "cypress run --spec 'cypress/e2e/User10.cy.js'"
   },
   "devDependencies": {
     "@testomatio/reporter": "^1.4.10",
