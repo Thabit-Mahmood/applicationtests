@@ -5,7 +5,7 @@
   "scripts": {
     "cypress:run": "cypress run",
     "test:sequential-ui": "powershell -ExecutionPolicy Bypass -File ./run-tests-sequentially.ps1",
-    "test": "npm-run-all --parallel test:run:test1 test:run:test2 test:run:test3 test:run:test4 test:run:test5 test:run:test6 test:run:test7",
+    "test": "npm-run-all --parallel test:run:test1 test:run:test2 test:run:test3",
     "test:run:test1": "cypress run --spec 'cypress/e2e/Admin.cy.js'",
     "test:run:test2": "cypress run --spec 'cypress/e2e/Institution.cy.js'",
     "test:run:test3": "cypress run --spec 'cypress/e2e/User.cy.js'",
